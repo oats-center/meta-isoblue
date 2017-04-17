@@ -1,0 +1,11 @@
+[Unit]
+Description=Bring %I Interfaces Up
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/ip link set %I type can bitrate 250000
+ExecStart=/sbin/ip link set %I up
+
+[Install]
+WantedBy=multi-user.target
