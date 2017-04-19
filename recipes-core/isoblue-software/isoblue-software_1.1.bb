@@ -33,6 +33,10 @@ do_install () {
 	install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/misc/get_pgns.sh ${D}/opt/bin/
 	install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/misc/get_presence.sh ${D}/opt/bin/
 	install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/misc/gps_log_watchdog.sh ${D}/opt/bin/
+
+    #install the schema directory
+    install -d ${D}/opt/schema
+    install -m 0644 ${WORKDIR}/isoblue2-isoblue-software_${PV}/software/schema/*.avsc ${D}/opt/schema
 }
 
 FILES_${PN} += " \
@@ -44,4 +48,5 @@ FILES_${PN} += " \
 	/opt/bin/get_pgns.sh \
 	/opt/bin/get_presence.sh \
 	/opt/bin/gps_log_watchdog.sh \
+	/opt/schema/*.avsc \
 "

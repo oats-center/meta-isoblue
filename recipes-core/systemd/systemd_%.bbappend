@@ -1,11 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/systemd:"
 
-def get_port():
-    import random
-    return random.randint(2333, 2433)
-
-SSHPORT ?= "${@get_port()}"
-
 SRC_URI += " \
     file://can_up@.service \
     file://broker.service \
@@ -23,7 +17,7 @@ SRC_URI += " \
     file://heartbeat.service \
     file://mirror.service \
     file://net-strength.service \
-    file://ssh-forward@.service \
+    file://ssh-forward.service \
     file://topic.service \
     file://tunnel@.service \
     file://zookeeper.service \
@@ -57,8 +51,15 @@ do_install_append() {
 
 	install -m 0644 ${WORKDIR}/gps-log@.service ${D}${systemd_system_unitdir}/gps-log@gps.service
 	install -m 0644 ${WORKDIR}/gps-log@.service ${D}${systemd_system_unitdir}/gps-log@remote.service
-	install -m 0644 ${WORKDIR}/ssh-forward@.service ${D}${systemd_system_unitdir}/ssh-forward@${SSHPORT}.service
+
+    # use custom ports from isoblue2.conf
+	install -m 0644 ${WORKDIR}/ssh-forward.service ${D}${systemd_system_unitdir}/ssh-forward.service
+    sed -i "s/SSHPORT/${SSHPORT}/" ${D}${systemd_system_unitdir}/ssh-forward.service
+
+    # use custom ports from isoblue2.conf
 	install -m 0644 ${WORKDIR}/tunnel@.service ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
+    sed -i "s/BROKERPORT/${BROKERPORT}/" ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
+    sed -i "s/ZKPORT/${ZKPORT}/" ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
 }
 
 FILES_${PN} += " \
@@ -79,20 +80,21 @@ FILES_${PN} += " \
 	${systemd_system_unitdir}/heartbeat.service \
 	${systemd_system_unitdir}/mirror.service \
 	${systemd_system_unitdir}/net-strength.service \
-	${systemd_system_unitdir}/ssh-forward@${SSHPORT}.service \
+	${systemd_system_unitdir}/ssh-forward.service \
 	${systemd_system_unitdir}/topic.service \
 	${systemd_system_unitdir}/tunnel@52.54.160.103.service \
 	${systemd_system_unitdir}/zookeeper.service \
 "
 
-SYSTEMD_SERVICE_${PN} += " \
+# Let's not enable the can-watchdog.service by default
+
+SYSTEMD_SERVICE_${PN} = " \
 	zookeeper.service \
-	can-watchdog.service \
 	get-pgns.service \
 	get-presence.service \
 	gps-log@remote.service \
 	gps-log@gps.service \
-	ssh-forward@${SSHPORT}.service \
+	ssh-forward.service \
 	topic.service \
 	tunnel@52.54.160.103.service \
 "

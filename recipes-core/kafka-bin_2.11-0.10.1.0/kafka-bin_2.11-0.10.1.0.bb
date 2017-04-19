@@ -33,14 +33,17 @@ do_install () {
 	install -d ${D}/opt/kafka/libs
 	install -d ${D}/opt/kafka/logs
 
+    # remove extra flag to make kafka broker work
+    sed -i 's/-server //' ${S}/bin/kafka-run-class.sh
+
 	# install the binaries
 	install -m 0755 ${S}/bin/*.sh ${D}/opt/kafka/bin/
 
-	# install the config 
+	# install the config
 	install -m 0644 ${S}/config/*.properties ${D}/opt/kafka/config/
 	install -m 0644 ${WORKDIR}/*.properties ${D}/opt/kafka/config/
 
-	# install the libs 
+	# install the libs
 	install -m 0644 ${S}/libs/*.jar* ${D}/opt/kafka/libs/
 }
 
