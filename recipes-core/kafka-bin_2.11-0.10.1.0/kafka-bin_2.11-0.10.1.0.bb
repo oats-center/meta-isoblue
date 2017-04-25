@@ -43,6 +43,9 @@ do_install () {
 	install -m 0644 ${S}/config/*.properties ${D}/opt/kafka/config/
 	install -m 0644 ${WORKDIR}/*.properties ${D}/opt/kafka/config/
 
+    # modify the port
+    sed -i "s/BROKERPORT/${BROKERPORT}/" ${D}/opt/kafka/config/isoblueProducer.properties
+
 	# install the libs
 	install -m 0644 ${S}/libs/*.jar* ${D}/opt/kafka/libs/
 }

@@ -60,6 +60,18 @@ do_install_append() {
 	install -m 0644 ${WORKDIR}/tunnel@.service ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
     sed -i "s/BROKERPORT/${BROKERPORT}/" ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
     sed -i "s/ZKPORT/${ZKPORT}/" ${D}${systemd_system_unitdir}/tunnel@52.54.160.103.service
+
+    # make symlinks
+    ln -sf ${systemd_system_unitdir}/zookeeper.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/zookeeper.service
+    ln -sf ${systemd_system_unitdir}/get-pgns.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/get-pgns.service
+    ln -sf ${systemd_system_unitdir}/get-presence.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/get-presence.service
+    ln -sf ${systemd_system_unitdir}/get-log@remote.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/gps-log@remote.service
+    ln -sf ${systemd_system_unitdir}/gps-log@gps.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/gps-log@gps.service
+    ln -sf ${systemd_system_unitdir}/gps-log-watchdog.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/gps-log-watchdog.service
+    ln -sf ${systemd_system_unitdir}/ssh-forward.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/ssh-forward.service
+    ln -sf ${systemd_system_unitdir}/ssh-forward.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/ssh-forward.service
+    ln -sf ${systemd_system_unitdir}/tunnel@52.54.160.103.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/tunnel@52.54.160.103.service
+    ln -sf ${systemd_system_unitdir}/gpsd.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/gpsd.service
 }
 
 FILES_${PN} += " \
@@ -95,7 +107,6 @@ SYSTEMD_SERVICE_${PN} = " \
 	gps-log@remote.service \
 	gps-log@gps.service \
 	ssh-forward.service \
-	topic.service \
 	tunnel@52.54.160.103.service \
 "
 

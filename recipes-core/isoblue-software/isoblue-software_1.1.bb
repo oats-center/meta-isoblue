@@ -4,8 +4,8 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
 SRC_URI = "https://github.com/OATS-Group/isoblue2/archive/isoblue-software_${PV}.tar.gz"
-SRC_URI[md5sum] = "7efa85e6a9c5af396a55c3a0ac1f6644"
-SRC_URI[sha256sum] = "32512c1c665ad04d96569e02ee72f5df4a7d6af0a63d81f3fa168d678466b2a6"
+SRC_URI[md5sum] = "1aeab374c3532654c3eab7b9ecbce024"
+SRC_URI[sha256sum] = "b0396fc0f78b6c4c77238589ca4c28816d5910014191a0a1d89a31f8eea832f5"
 DEPENDS = "librdkafka avro-c libpthread-stubs"
 
 S = "${WORKDIR}/isoblue2-isoblue-software_${PV}/software/producer"
@@ -29,6 +29,9 @@ do_install () {
 	install -m 0755 ${WORKDIR}/build/debug_tools/can_msg_rate ${D}/opt/bin/
 	install -m 0755 ${WORKDIR}/build/debug_tools/heartbeat ${D}/opt/bin/
 
+    # install the python script
+    install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/software/producer/kafka_gps_log/kafka_gps_log.py ${D}/opt/bin/
+
 	# install the scripts
 	install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/misc/get_pgns.sh ${D}/opt/bin/
 	install -m 0755 ${WORKDIR}/isoblue2-isoblue-software_${PV}/misc/get_presence.sh ${D}/opt/bin/
@@ -48,5 +51,6 @@ FILES_${PN} += " \
 	/opt/bin/get_pgns.sh \
 	/opt/bin/get_presence.sh \
 	/opt/bin/gps_log_watchdog.sh \
+	/opt/bin/kafka_gps_log.py \
 	/opt/schema/*.avsc \
 "

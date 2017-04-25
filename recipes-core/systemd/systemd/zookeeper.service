@@ -1,7 +1,7 @@
 [Unit]
 Description=Apache ZooKeeper Service
 Documentation=http://kafka.apache.org/documentation.html
-Requires=network.target remote-fs.target
+Requires=network.target remote-fs.target broker.service
 Before=shutdown.target sleep.target broker.service
 After=network.target remote-fs.target dev-sda1.device
 
